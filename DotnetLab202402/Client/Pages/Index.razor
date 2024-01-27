@@ -1,0 +1,112 @@
+﻿@page "/"
+@using DotnetLab202402.Shared.Model
+@inject HttpClient Http
+
+<PageTitle>Index</PageTitle>
+<FluentStack Orientation="Orientation.Vertical" VerticalGap="30">
+    <FluentLabel Typo="Typography.PageTitle">Blogs</FluentLabel>
+    <FluentButton IconStart="@(new Icons.Regular.Size24.Add())" OnClick="AddDialogOpen">作成</FluentButton>
+    @if (blogs == null)
+    {
+        <FluentProgressRing />
+    }
+    else
+    {
+        <FluentDataGrid Items="blogs.AsQueryable()">
+            <TemplateColumn Title="タイトル">
+                @context.Title
+            </TemplateColumn>
+            <TemplateColumn Title="内容">
+                @context.Content
+            </TemplateColumn>
+            <TemplateColumn Title="作成者">
+                @context.Author
+            </TemplateColumn>
+            <TemplateColumn Title="作成日">
+                @if (context.Created.HasValue)
+                @context.Created.Value.ToShortDateString()
+            </TemplateColumn>
+            <TemplateColumn Title="更新日">
+                @if (context.Updated.HasValue)
+                @context.Updated.Value.ToShortDateString()
+            </TemplateColumn>
+            <TemplateColumn Title="更新">
+                <FluentButton IconStart="@(new Icons.Regular.Size24.Edit())" />
+                <FluentButton IconStart="@(new Icons.Regular.Size24.Delete())" />
+            </TemplateColumn>
+        </FluentDataGrid>
+    }
+</FluentStack>
+<FluentDialog @ref="addDialog">
+    <FluentDialogHeader ShowDismiss="true">
+        <FluentLabel Typo="Typography.PaneHeader">作成</FluentLabel>
+        <FluentDialogBody>
+            <FluentStack Orientation="Orientation.Vertical" VerticalGap="10" HorizontalAlignment="HorizontalAlignment.Center">
+                <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Center">
+                    <FluentLabel Style="width:70px">タイトル</FluentLabel>
+                    <FluentTextField @bind-Value="addBlog.Title" Style="width:207px" />
+                </FluentStack>
+                <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Center">
+                    <FluentLabel Style="width:70px">内容</FluentLabel>
+                    <FluentTextField @bind-Value="addBlog.Content" Style="width:207px" />
+                </FluentStack>
+                <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Center">
+                    <FluentLabel Style="width:70px">作成者</FluentLabel>
+                    <FluentTextField @bind-Value="addBlog.Author" Style="width:207px" />
+                </FluentStack>
+                <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Center">
+                    <FluentLabel Style="width:70px">作成日</FluentLabel>
+                    <FluentDatePicker @bind-Value="addBlog.Created" />
+                </FluentStack>
+                <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Center">
+                    <FluentLabel Style="width:70px">更新日</FluentLabel>
+                    <FluentDatePicker @bind-Value="addBlog.Updated" />
+                </FluentStack>
+            </FluentStack>
+            <FluentDialogFooter>
+                <FluentStack HorizontalAlignment="HorizontalAlignment.Right">
+                <FluentButton Appearance="Appearance.Accent" IconStart="@(new Icons.Regular.Size24.Add())" OnClick="AddDialogSubmit">作成</FluentButton>
+                <FluentButton Appearance="Appearance.Neutral" IconStart="@(new Icons.Regular.Size24.Dismiss())" OnClick="AddDialogClose">閉じる</FluentButton>
+                </FluentStack>
+            </FluentDialogFooter>
+        </FluentDialogBody>
+    </FluentDialogHeader>
+</FluentDialog>
+
+@code {
+    private IEnumerable<Blog>? blogs = new List<Blog>();
+
+    private FluentDialog? addDialog;
+
+    private Blog addBlog = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        blogs = await Http.GetFromJsonAsync<IEnumerable<Blog>>("blog");
+
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            addDialog!.Hide();
+        }
+    }
+
+    private void AddDialogOpen()
+    {
+        addDialog!.Show();
+    }
+    private void AddDialogClose()
+    {
+        addDialog!.Hide();
+    }
+
+    private async Task AddDialogSubmit()
+    {
+        await Http.PostAsJsonAsync<Blog>("blog", addBlog);
+        addDialog!.Hide();
+        blogs = await Http.GetFromJsonAsync<IEnumerable<Blog>>("blog");
+    }
+}

@@ -1,0 +1,42 @@
+﻿@inherits LayoutComponentBase
+@*
+<div class="page">
+    <div class="sidebar">
+        <NavMenu />
+    </div>
+
+    <main>
+        <div class="top-row px-4">
+            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+        </div>
+
+        <article class="content px-4">
+            @Body
+        </article>
+        <FluentToastProvider />
+<FluentDialogProvider />
+<FluentTooltipProvider />
+<FluentMessageBarProvider />
+    </main>
+</div>
+*@
+<FluentLayout Style="height: 100%">
+
+    <FluentHeader>header</FluentHeader>
+    <FluentStack Orientation="Orientation.Horizontal" Width="100%" Style="height:stretch">
+        <NavMenu />
+        <FluentBodyContent>
+            <ChildContent>
+                @Body
+            </ChildContent>
+        </FluentBodyContent>
+    </FluentStack>
+    <FluentFooter Style="bottom:auto;position:fixed;">
+        .NET Lab 2024/02 footer
+    </FluentFooter>
+    <FluentToastProvider />
+    <FluentDialogProvider />
+    <FluentTooltipProvider />
+    <FluentMessageBarProvider />
+</FluentLayout>
+
