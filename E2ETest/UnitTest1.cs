@@ -90,4 +90,22 @@ public class Tests : PageTest
         await Page.GetByTestId("updatedialogsubmit").IsVisibleAsync();
         await Page.GetByTestId("updatedialogclose").IsVisibleAsync();
     }
+
+    [Test]
+    public async Task DeleteDialog()
+    {
+        await Page.GotoAsync("https://localhost:7283/");
+
+        await Expect(Page).ToHaveTitleAsync(new Regex("Index"));
+
+        await Page.GetByTestId("pagetitle").IsVisibleAsync();
+
+        Playwright.Selectors.SetTestIdAttribute("data-selector");
+
+        await Page.GetByTestId("deletebutton").First.ClickAsync();
+
+        await Page.GetByTestId("deletedialogpanetitle").IsVisibleAsync();
+        await Page.GetByTestId("deletedialogsubmit").IsVisibleAsync();
+        await Page.GetByTestId("deletedialogclose").IsVisibleAsync();
+    }
 }
