@@ -33,12 +33,17 @@ public class BlogController(Context context) : ControllerBase
     [HttpPut]
     public async Task<IActionResult> Put(Blog blog)
     {
-        if (Get(blog.Id) == null)
+        var update = await Get(blog.Id);
+        if (update == null)
         { 
             return NotFound(); 
         }
+        update.Title = blog.Title;
+        update.Content = blog.Content;
+        update.Author = blog.Author;
+        update.Updated = DateTime.Now;
 
-        _context.Blogs.Update(blog);
+        _context.Blogs.Update(update);
 
         await _context.SaveChangesAsync();
 

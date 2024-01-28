@@ -31,8 +31,8 @@
                 @context.Updated.Value.ToShortDateString()
             </TemplateColumn>
             <TemplateColumn Title="更新">
-                <FluentButton IconStart="@(new Icons.Regular.Size24.Edit())" />
-                <FluentButton IconStart="@(new Icons.Regular.Size24.Delete())" />
+                <FluentButton IconStart="@(new Icons.Regular.Size24.Edit())" OnClick="@(() => UpdateDialogOpen(context.Id))" />
+                <FluentButton IconStart="@(new Icons.Regular.Size24.Delete())" OnClick="@(() => DeleteDialogOpen(context.Id))"/>
             </TemplateColumn>
         </FluentDataGrid>
     }
@@ -73,12 +73,70 @@
     </FluentDialogHeader>
 </FluentDialog>
 
+<FluentDialog @ref="updateDialog">
+    <FluentDialogHeader>
+        <FluentLabel Typo="Typography.PaneHeader">更新</FluentLabel>
+    </FluentDialogHeader>
+    <FluentDialogBody>
+        <FluentStack Orientation="Orientation.Vertical" VerticalGap="10" HorizontalAlignment="HorizontalAlignment.Center">
+            <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Center">
+                <FluentLabel Style="width:70px">タイトル</FluentLabel>
+                <FluentTextField @bind-Value="updateBlog.Title" Style="width:207px" />
+            </FluentStack>
+            <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Center">
+                <FluentLabel Style="width:70px">内容</FluentLabel>
+                <FluentTextField @bind-Value="updateBlog.Content" Style="width:207px" />
+            </FluentStack>
+            <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Center">
+                <FluentLabel Style="width:70px">作成者</FluentLabel>
+                <FluentTextField @bind-Value="updateBlog.Author" Style="width:207px" />
+            </FluentStack>
+            <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Center">
+                <FluentLabel Style="width:70px">作成日</FluentLabel>
+                <FluentDatePicker @bind-Value="updateBlog.Created" />
+            </FluentStack>
+            <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Center">
+                <FluentLabel Style="width:70px">更新日</FluentLabel>
+                <FluentDatePicker @bind-Value="updateBlog.Updated" />
+            </FluentStack>
+        </FluentStack>
+        <FluentDialogFooter>
+            <FluentStack HorizontalAlignment="HorizontalAlignment.Right">
+                <FluentButton Appearance="Appearance.Accent" IconStart="@(new Icons.Regular.Size24.Edit())" OnClick="UpdateDialogSubmit">更新</FluentButton>
+                <FluentButton Appearance="Appearance.Neutral" IconStart="@(new Icons.Regular.Size24.Dismiss())" OnClick="UpdateDialogClose">閉じる</FluentButton>
+            </FluentStack>
+        </FluentDialogFooter>
+    </FluentDialogBody>
+</FluentDialog>
+
+<FluentDialog @ref="deleteDialog">
+    <FluentDialogHeader>
+        <FluentLabel Typo="Typography.PaneHeader">本当に削除しますか？</FluentLabel>
+    </FluentDialogHeader>
+    <FluentDialogBody>
+        <FluentDialogFooter>
+            <FluentStack HorizontalAlignment="HorizontalAlignment.Right">
+                <FluentButton Appearance="Appearance.Accent" IconStart="@(new Icons.Regular.Size24.Delete())" OnClick="DeleteDialogSubmit">削除</FluentButton>
+                <FluentButton Appearance="Appearance.Neutral" IconStart="@(new Icons.Regular.Size24.Dismiss())" OnClick="DeleteDialogClose">キャンセル</FluentButton>
+            </FluentStack>
+        </FluentDialogFooter>
+    </FluentDialogBody>
+</FluentDialog>
+
 @code {
     private IEnumerable<Blog>? blogs = new List<Blog>();
 
     private FluentDialog? addDialog;
 
     private Blog addBlog = new();
+
+    private FluentDialog? updateDialog;
+
+    private Blog updateBlog = new();
+
+    private FluentDialog? deleteDialog;
+    
+    private int deleteId;
 
     protected override async Task OnInitializedAsync()
     {
@@ -91,6 +149,8 @@
         if (firstRender)
         {
             addDialog!.Hide();
+            updateDialog!.Hide();
+            deleteDialog!.Hide();
         }
     }
 
@@ -107,6 +167,37 @@
     {
         await Http.PostAsJsonAsync<Blog>("blog", addBlog);
         addDialog!.Hide();
+        blogs = await Http.GetFromJsonAsync<IEnumerable<Blog>>("blog");
+    }
+
+    private async Task UpdateDialogOpen(int id)
+    {
+        updateBlog = await Http.GetFromJsonAsync<Blog>($"blog/{id}") ?? throw new InvalidOperationException();
+        updateDialog!.Show();
+    }
+    private void UpdateDialogClose()
+    {
+        updateDialog!.Hide();
+    }
+    private async Task UpdateDialogSubmit()
+    {
+        await Http.PutAsJsonAsync<Blog>("blog", updateBlog);
+        updateDialog!.Hide();
+        blogs = await Http.GetFromJsonAsync<IEnumerable<Blog>>("blog");
+    }
+    private void DeleteDialogOpen(int id)
+    {
+        deleteId = id;
+        deleteDialog!.Show();
+    }
+    private void DeleteDialogClose()
+    {
+        deleteDialog!.Hide();
+    }
+    private async Task DeleteDialogSubmit()
+    {
+        await Http.DeleteAsync($"blog/{deleteId}");
+        deleteDialog!.Hide();
         blogs = await Http.GetFromJsonAsync<IEnumerable<Blog>>("blog");
     }
 }
