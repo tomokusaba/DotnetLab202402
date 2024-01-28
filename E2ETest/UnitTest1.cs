@@ -58,4 +58,36 @@ public class Tests : PageTest
         await Page.GetByTestId("adddialogsubmit").IsVisibleAsync();
         await Page.GetByTestId("adddialogclose").IsVisibleAsync();
     }
+
+    /// <summary>
+    /// 一件以上データがあることが前提
+    /// </summary>
+    /// <returns></returns>
+    [Test]
+    public async Task UpdateDialog()
+    {
+        await Page.GotoAsync("https://localhost:7283/");
+
+        await Expect(Page).ToHaveTitleAsync(new Regex("Index"));
+
+        await Page.GetByTestId("pagetitle").IsVisibleAsync();
+
+        Playwright.Selectors.SetTestIdAttribute("data-selector");
+
+        await Page.GetByTestId("updatebutton").First.ClickAsync();
+
+        await Page.GetByTestId("updatedialogpanetitle").IsVisibleAsync();
+        await Page.GetByTestId("updatedialogtitlelabel").IsVisibleAsync();
+        await Page.GetByTestId("updatedialogtitletextfield").IsVisibleAsync();
+        await Page.GetByTestId("updatedialogcontentlabel").IsVisibleAsync();
+        await Page.GetByTestId("updatedialogcontenttextfield").IsVisibleAsync();
+        await Page.GetByTestId("updatedialogauthorlabel").IsVisibleAsync();
+        await Page.GetByTestId("updatedialogauthortextfield").IsVisibleAsync();
+        await Page.GetByTestId("updatedialogcreatedlabel").IsVisibleAsync();
+        await Page.GetByTestId("updatedialogcreatedtextfield").IsVisibleAsync();
+        await Page.GetByTestId("updatedialogupdatedlabel").IsVisibleAsync();
+        await Page.GetByTestId("updatedialogupdatedtextfield").IsVisibleAsync();
+        await Page.GetByTestId("updatedialogsubmit").IsVisibleAsync();
+        await Page.GetByTestId("updatedialogclose").IsVisibleAsync();
+    }
 }
