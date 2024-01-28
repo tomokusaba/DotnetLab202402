@@ -73,34 +73,34 @@
 </FluentStack>
 <FluentDialog @ref="addDialog">
     <FluentDialogHeader ShowDismiss="true">
-        <FluentLabel Typo="Typography.PaneHeader">作成</FluentLabel>
+        <FluentLabel Typo="Typography.PaneHeader" data-testid="adddialogpanetitle">作成</FluentLabel>
         <FluentDialogBody>
             <FluentStack Orientation="Orientation.Vertical" VerticalGap="10" HorizontalAlignment="HorizontalAlignment.Center">
                 <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Center">
-                    <FluentLabel Style="width:70px">タイトル</FluentLabel>
-                    <FluentTextField @bind-Value="addBlog.Title" Style="width:207px" />
+                    <FluentLabel Style="width:70px" data-testid="adddialogtitlelabel">タイトル</FluentLabel>
+                    <FluentTextField @bind-Value="addBlog.Title" Style="width:207px" data-testid="adddialogtitletextfield" />
                 </FluentStack>
                 <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Center">
-                    <FluentLabel Style="width:70px">内容</FluentLabel>
-                    <FluentTextField @bind-Value="addBlog.Content" Style="width:207px" />
+                    <FluentLabel Style="width:70px" data-testid="adddialogcontentlabel">内容</FluentLabel>
+                    <FluentTextField @bind-Value="addBlog.Content" Style="width:207px" data-testid="adddialogcontenttextfield" />
                 </FluentStack>
                 <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Center">
-                    <FluentLabel Style="width:70px">作成者</FluentLabel>
-                    <FluentTextField @bind-Value="addBlog.Author" Style="width:207px" />
+                    <FluentLabel Style="width:70px" data-testid="adddialogauthorlabel">作成者</FluentLabel>
+                    <FluentTextField @bind-Value="addBlog.Author" Style="width:207px" data-testid="adddialogauthortestfield" />
                 </FluentStack>
                 <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Center">
-                    <FluentLabel Style="width:70px">作成日</FluentLabel>
-                    <FluentDatePicker @bind-Value="addBlog.Created" />
+                    <FluentLabel Style="width:70px" data-testid="adddialogcreatedlabel">作成日</FluentLabel>
+                    <FluentDatePicker @bind-Value="addBlog.Created" data-testid="adddialogcreatedtextfield"/>
                 </FluentStack>
                 <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Center">
-                    <FluentLabel Style="width:70px">更新日</FluentLabel>
-                    <FluentDatePicker @bind-Value="addBlog.Updated" />
+                    <FluentLabel Style="width:70px" data-testid="adddialogupdatelabel">更新日</FluentLabel>
+                    <FluentDatePicker @bind-Value="addBlog.Updated" data-testid="adddialogupdatetextfield" />
                 </FluentStack>
             </FluentStack>
             <FluentDialogFooter>
                 <FluentStack HorizontalAlignment="HorizontalAlignment.Right">
-                    <FluentButton Appearance="Appearance.Accent" IconStart="@(new Icons.Regular.Size24.Add())" OnClick="AddDialogSubmit">作成</FluentButton>
-                    <FluentButton Appearance="Appearance.Neutral" IconStart="@(new Icons.Regular.Size24.Dismiss())" OnClick="AddDialogClose">閉じる</FluentButton>
+                    <FluentButton Appearance="Appearance.Accent" IconStart="@(new Icons.Regular.Size24.Add())" OnClick="AddDialogSubmit" data-testid="adddialogsubmit">作成</FluentButton>
+                    <FluentButton Appearance="Appearance.Neutral" IconStart="@(new Icons.Regular.Size24.Dismiss())" OnClick="AddDialogClose" data-testid="adddialogclose">閉じる</FluentButton>
                 </FluentStack>
             </FluentDialogFooter>
         </FluentDialogBody>
