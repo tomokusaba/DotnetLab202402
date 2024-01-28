@@ -4,8 +4,8 @@
 
 <PageTitle>Index</PageTitle>
 <FluentStack Orientation="Orientation.Vertical" VerticalGap="30">
-    <FluentLabel Typo="Typography.PageTitle">Blogs</FluentLabel>
-    <FluentButton IconStart="@(new Icons.Regular.Size24.Add())" OnClick="AddDialogOpen">作成</FluentButton>
+    <FluentLabel Typo="Typography.PageTitle" data-testid="pagetitile">Blogs</FluentLabel>
+    <FluentButton IconStart="@(new Icons.Regular.Size24.Add())" OnClick="AddDialogOpen" data-testid="addbutton">作成</FluentButton>
     @if (blogs == null)
     {
         <FluentProgressRing />
@@ -13,26 +13,60 @@
     else
     {
         <FluentDataGrid Items="blogs.AsQueryable()">
-            <TemplateColumn Title="タイトル">
-                @context.Title
+            <TemplateColumn>
+                <HeaderCellItemTemplate>
+                    <div data-testid="gridtitleheader">タイトル</div>
+                </HeaderCellItemTemplate>
+                <ChildContent>
+                    <div data-testid="@($"gridtitle{context.Id}")">@context.Title</div>
+                </ChildContent>
             </TemplateColumn>
-            <TemplateColumn Title="内容">
-                @context.Content
+            <TemplateColumn>
+                <HeaderCellItemTemplate>
+                    <div data-testid="gridcontentheader">内容</div>
+                </HeaderCellItemTemplate>
+                <ChildContent>
+                    <div data-testid="gridcontent">@context.Content</div>
+                </ChildContent>
             </TemplateColumn>
-            <TemplateColumn Title="作成者">
-                @context.Author
+            <TemplateColumn>
+                <HeaderCellItemTemplate>
+                    <div data-testid="gridauthorheader">作成者</div>
+                </HeaderCellItemTemplate>
+                <ChildContent>
+                    <div data-testid="gridauthor">@context.Author</div>
+                </ChildContent>
             </TemplateColumn>
-            <TemplateColumn Title="作成日">
-                @if (context.Created.HasValue)
-                @context.Created.Value.ToShortDateString()
+            <TemplateColumn>
+                <HeaderCellItemTemplate>
+                    <div data-testid="gridcreatedheader">作成日</div>
+                </HeaderCellItemTemplate>
+                <ChildContent>
+                    @if (context.Created.HasValue)
+                    {
+                        <div data-testid="gridcreated">@context.Created.Value.ToShortDateString()</div>
+                    }
+                </ChildContent>
             </TemplateColumn>
-            <TemplateColumn Title="更新日">
-                @if (context.Updated.HasValue)
-                @context.Updated.Value.ToShortDateString()
+            <TemplateColumn>
+                <HeaderCellItemTemplate>
+                    <div data-testid="gridupdatedheader">更新日</div>
+                </HeaderCellItemTemplate>
+                <ChildContent>
+                    @if (context.Updated.HasValue)
+                    {
+                        <div data-testid="gridupdated">@context.Updated.Value.ToShortDateString()</div>
+                    }
+                </ChildContent>
             </TemplateColumn>
             <TemplateColumn Title="更新">
-                <FluentButton IconStart="@(new Icons.Regular.Size24.Edit())" OnClick="@(() => UpdateDialogOpen(context.Id))" />
-                <FluentButton IconStart="@(new Icons.Regular.Size24.Delete())" OnClick="@(() => DeleteDialogOpen(context.Id))"/>
+                <HeaderCellItemTemplate>
+                    <div data-testid="gridupdateheader">更新</div>
+                </HeaderCellItemTemplate>
+                <ChildContent>
+                    <FluentButton IconStart="@(new Icons.Regular.Size24.Edit())" OnClick="@(() => UpdateDialogOpen(context.Id))" data-testid="@($"updatebutton{context.Id}")" />
+                    <FluentButton IconStart="@(new Icons.Regular.Size24.Delete())" OnClick="@(() => DeleteDialogOpen(context.Id))" data-testid="@($"deletebutton{context.Id}")" />
+                </ChildContent>
             </TemplateColumn>
         </FluentDataGrid>
     }
@@ -65,8 +99,8 @@
             </FluentStack>
             <FluentDialogFooter>
                 <FluentStack HorizontalAlignment="HorizontalAlignment.Right">
-                <FluentButton Appearance="Appearance.Accent" IconStart="@(new Icons.Regular.Size24.Add())" OnClick="AddDialogSubmit">作成</FluentButton>
-                <FluentButton Appearance="Appearance.Neutral" IconStart="@(new Icons.Regular.Size24.Dismiss())" OnClick="AddDialogClose">閉じる</FluentButton>
+                    <FluentButton Appearance="Appearance.Accent" IconStart="@(new Icons.Regular.Size24.Add())" OnClick="AddDialogSubmit">作成</FluentButton>
+                    <FluentButton Appearance="Appearance.Neutral" IconStart="@(new Icons.Regular.Size24.Dismiss())" OnClick="AddDialogClose">閉じる</FluentButton>
                 </FluentStack>
             </FluentDialogFooter>
         </FluentDialogBody>
@@ -135,7 +169,7 @@
     private Blog updateBlog = new();
 
     private FluentDialog? deleteDialog;
-    
+
     private int deleteId;
 
     protected override async Task OnInitializedAsync()
