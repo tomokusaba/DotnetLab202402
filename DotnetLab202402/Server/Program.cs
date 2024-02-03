@@ -8,7 +8,20 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
-builder.Services.AddDbContext<Context>(options => options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=Dotnetlab202402;Trusted_Connection=True;"));
+builder.Services.AddDbContextPool<Context>(options =>
+{
+    DbContextOptionsBuilder dbContextOptionsBuilder = options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=Dotnetlab202402;Trusted_Connection=True;",
+        sqlServerOptionsAction: Sqloption =>
+        {
+            Sqloption.EnableRetryOnFailure(
+                maxRetryCount: 5,
+                maxRetryDelay: TimeSpan.FromSeconds(30),
+                errorNumbersToAdd: null
+                );
+            Sqloption.CommandTimeout(30);
+        });
+    options.UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()));
+});
 
 var app = builder.Build();
 

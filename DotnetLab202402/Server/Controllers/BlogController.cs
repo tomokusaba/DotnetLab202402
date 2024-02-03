@@ -13,7 +13,7 @@ public class BlogController(Context context) : ControllerBase
     [HttpGet]
     public async Task<IEnumerable<Blog>> Get()
     {
-        return await _context.Blogs.ToListAsync();
+        return await _context.Blogs.AsNoTracking().ToListAsync();
     }
 
     [HttpGet("{id}")]

@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotnetLab202402.Client", "D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotnetLab202402.Shared", "DotnetLab202402\Shared\DotnetLab202402.Shared.csproj", "{CE63035D-1E49-4E16-8244-8CED083AF03C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "E2ETest", "E2ETest\E2ETest.csproj", "{0A2F6952-7D6B-40C2-8769-7D2E43EF6C4A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "E2ETest", "E2ETest\E2ETest.csproj", "{0A2F6952-7D6B-40C2-8769-7D2E43EF6C4A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
