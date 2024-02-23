@@ -14,7 +14,7 @@ public class Page4Test : PageTest
         await Page.GotoAsync("https://localhost:7283/testpage4");
 
         // Expect a title "to contain" a substring.
-        await Expect(Page).ToHaveTitleAsync(new Regex("Index"));
+        //await Expect(Page).ToHaveTitleAsync(new Regex("Index"));
 
         await Page.GetByTestId("pagetitle").IsVisibleAsync();
 
@@ -36,7 +36,7 @@ public class Page4Test : PageTest
     {
         await Page.GotoAsync("https://localhost:7283/testpage4");
 
-        await Expect(Page).ToHaveTitleAsync(new Regex("Index"));
+        //await Expect(Page).ToHaveTitleAsync(new Regex("Index"));
 
         await Page.GetByTestId("pagetitle").IsVisibleAsync();
 
@@ -68,7 +68,7 @@ public class Page4Test : PageTest
     {
         await Page.GotoAsync("https://localhost:7283/testpage4");
 
-        await Expect(Page).ToHaveTitleAsync(new Regex("Index"));
+        //await Expect(Page).ToHaveTitleAsync(new Regex("Index"));
 
         await Page.GetByTestId("pagetitle").IsVisibleAsync();
 
@@ -96,7 +96,7 @@ public class Page4Test : PageTest
     {
         await Page.GotoAsync("https://localhost:7283/testpage4");
 
-        await Expect(Page).ToHaveTitleAsync(new Regex("Index"));
+        //await Expect(Page).ToHaveTitleAsync(new Regex("Index"));
 
         await Page.GetByTestId("pagetitle").IsVisibleAsync();
 

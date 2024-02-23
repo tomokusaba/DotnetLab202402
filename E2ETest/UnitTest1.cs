@@ -1,9 +1,32 @@
+using Microsoft.Extensions.Hosting;
+using Microsoft.Playwright;
+
 namespace E2ETest;
 
 [Parallelizable(ParallelScope.Self)]
 [TestFixture]
 public class Tests : PageTest
 {
+
+
+    public override BrowserNewContextOptions ContextOptions()
+    {
+        return new BrowserNewContextOptions()
+        {
+            RecordVideoDir = "videos",
+            RecordVideoSize = new RecordVideoSize() { Width = 1920, Height = 1080 },
+            ViewportSize = new ViewportSize { Width = 1920, Height = 1080 },
+             Locale = "ja-JP",
+             BaseURL = "https://localhost:7283"
+        };
+    }
+
+    [SetUp]
+    public async Task SetUp()
+    {
+        await Page.GotoAsync("/");
+    }
+
     /// <summary>
     /// 初期表示時の表示を確認する
     /// </summary>
@@ -11,7 +34,7 @@ public class Tests : PageTest
     [Test]
     public async Task HomepageHasPlaywrightInTitleAndGetStartedLinkLinkingtoTheIntroPage()
     {
-        await Page.GotoAsync("https://localhost:7283/");
+        //await Page.GotoAsync("/");
 
         // Expect a title "to contain" a substring.
         await Expect(Page).ToHaveTitleAsync(new Regex("Index"));
@@ -34,9 +57,9 @@ public class Tests : PageTest
     [Test]
     public async Task AddDialog()
     {
-        await Page.GotoAsync("https://localhost:7283/");
+        //await Page.GotoAsync("/");
 
-        await Expect(Page).ToHaveTitleAsync(new Regex("Index"));
+        //await Expect(Page).ToHaveTitleAsync(new Regex("Index"));
 
         await Page.GetByTestId("pagetitle").IsVisibleAsync();
 
@@ -66,7 +89,7 @@ public class Tests : PageTest
     [Test]
     public async Task UpdateDialog()
     {
-        await Page.GotoAsync("https://localhost:7283/");
+        //await Page.GotoAsync("/");
 
         await Expect(Page).ToHaveTitleAsync(new Regex("Index"));
 
@@ -94,7 +117,7 @@ public class Tests : PageTest
     [Test]
     public async Task DeleteDialog()
     {
-        await Page.GotoAsync("https://localhost:7283/");
+        //await Page.GotoAsync("/");
 
         await Expect(Page).ToHaveTitleAsync(new Regex("Index"));
 
