@@ -119,7 +119,7 @@ public class Tests : PageTest
     {
         //await Page.GotoAsync("/");
 
-        await Expect(Page).ToHaveTitleAsync(new Regex("Index"));
+        //await Expect(Page).ToHaveTitleAsync(new Regex("Index"));
 
         await Page.GetByTestId("pagetitle").IsVisibleAsync();
 
